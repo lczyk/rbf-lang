@@ -3,11 +3,16 @@ import logging
 import os
 import sys
 
-from . import Program, Tape, run
+from . import Program, Tape, __version__, run
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+    )
 
     parser.add_argument(
         "--log-level",
