@@ -1,4 +1,5 @@
 from typing import Callable, Optional
+
 from .command import Command
 from .program import Program, ProgramPointerError, _ProgramInitType
 from .tape import Tape, _TapeInitType
@@ -10,7 +11,8 @@ def run(
     max_steps: int = 1000,
     callback: Optional[Callable[[Program, Tape], bool]] = None,
 ) -> tuple[Program, Tape]:
-    """Run the RBF program. The program will run until it reaches the maximum number of steps or the callback returns True."""
+    """Run the RBF program. The program will run until it reaches
+    the maximum number of steps or the callback returns True."""
 
     program = Program(program)
     tape = Tape(tape)

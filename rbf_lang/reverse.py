@@ -1,10 +1,10 @@
-from typing import Sequence, Union, overload
+import logging
+from collections.abc import Sequence
 from functools import singledispatch
+from typing import Union, overload
 
 from .command import Command
 from .program import Program
-
-import logging
 
 logger = logging.getLogger("rbf")
 

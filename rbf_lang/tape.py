@@ -1,5 +1,6 @@
 import warnings
-from typing import Sequence, Union, overload, Optional
+from collections.abc import Sequence
+from typing import Optional, Union, overload
 
 _TAPE_SIZE = 8
 
@@ -28,7 +29,8 @@ class Tape(Sequence[bool]):
             self._tape = tape._tape.copy()
             if pointer is not None:
                 warnings.warn(
-                    "Pointer argument is ignored when initializing Tape with another Tape. Set it to None to disable this warning.",
+                    "Pointer argument is ignored when initializing Tape with "
+                    "another Tape. Set it to None to disable this warning.",
                     stacklevel=2,
                 )
             pointer = tape._pointer
@@ -58,12 +60,8 @@ class Tape(Sequence[bool]):
     @overload
     def __getitem__(self, index: slice) -> Sequence[bool]: ...
 
-    def __getitem__(
-        self, index_or_slice: Union[int, slice]
-    ) -> Union[bool, Sequence[bool]]:
-        if isinstance(index_or_slice, int):
-            return self._tape[index_or_slice]
-        elif isinstance(index_or_slice, slice):
+    def __getitem__(self, index_or_slice: Union[int, slice]) -> Union[bool, Sequence[bool]]:
+        if isinstance(index_or_slice, (int, slice)):
             return self._tape[index_or_slice]
         else:
             raise TypeError("Index must be an int or a slice.")

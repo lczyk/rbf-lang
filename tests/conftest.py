@@ -1,8 +1,9 @@
-import pytest
-from typing import Any, Generator
-from pathlib import Path
 import sys
+from collections.abc import Generator
+from pathlib import Path
+from typing import Any
 
+import pytest
 
 __project_root__ = Path(__file__).resolve().parents[1]
 sys.path.append(str(__project_root__))

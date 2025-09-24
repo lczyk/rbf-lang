@@ -58,6 +58,49 @@ files = [
     #
 ]
 
+[tool.ruff]
+exclude = [
+    ".git",
+    "__pycache__",
+    ".venv",
+    ".env",
+    ".eggs",
+    "*.egg",
+    ".tox",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".vscode",
+    "*-env",
+]
+line-length = 120
+lint.ignore = [
+    "SIM105",
+    "PLR0911", # too many return statements
+    "PLR0912", # too many branches
+    "PLR0913", # too many arguments in function definition
+    "PLR2004", # magic values
+    #
+]
+lint.select = [
+    "E",    # pycodestyle
+    "F",    # Pyflakes
+    "B",    # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "W",    # warnings
+    "UP",   # pyupgrade
+    "I",    # isort
+    "Q",    # flake8-quotes
+    "RUF",  # ruff
+    "TID",  # flake8-tidy-imports
+    "PERF", # perflint
+    "FURB", # refurb
+    "PL",   # pylint
+    #
+]
+
+output-format = "concise"
+
+
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = ["-s", "--tb=short", "--color=yes"]
