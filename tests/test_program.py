@@ -1,7 +1,7 @@
 import pytest
-from rbf_lang.program import Program, ProgramPointerError, InvalidProgramError
 
 from rbf_lang.command import Command
+from rbf_lang.program import InvalidProgramError, Program, ProgramPointerError
 
 
 def test_run() -> None:

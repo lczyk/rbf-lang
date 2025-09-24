@@ -1,6 +1,6 @@
 import pytest
-from rbf_lang import run, Program
-from rbf_lang import reverse_program
+
+from rbf_lang import Program, reverse_program, run
 
 
 @pytest.fixture

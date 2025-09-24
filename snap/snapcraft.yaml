@@ -1,0 +1,22 @@
+name: rbf-lang
+base: core24 # the base snap is the execution environment for this snap
+version: '0.2.2' # should match the version in rbf_lang/__init__.py
+summary: Reversible Bitfuck interpreter 
+license: MIT
+description: |
+  Reversible BitFuck (RBF) is a reversible Turing tarpit
+  esoteric programming language. RBF is trivially reversible -- any
+  computation can be run backwards to retrieve the original input.
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: strict
+
+apps:
+  rbf:
+    command: bin/rbf
+
+parts:
+  rbf:
+    plugin: python
+    source: .
+

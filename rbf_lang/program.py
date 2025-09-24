@@ -1,6 +1,7 @@
 import warnings
+from collections.abc import Sequence
+from typing import Optional, Union, overload
 
-from typing import Sequence, Union, overload, Optional
 from .command import Command
 from .exceptions import InvalidProgramError, ProgramPointerError
 
@@ -25,10 +26,11 @@ class Program(Sequence[Command]):
             self._steps = program.steps
             if pointer is not None:
                 warnings.warn(
-                    "Pointer argument is ignored when initializing Program with another Program. Set it to None to disable this warning.",
+                    "Pointer argument is ignored when initializing Program with "
+                    "another Program. Set it to None to disable this warning.",
                     stacklevel=2,
                 )
-        elif isinstance(program, str) or isinstance(program, Sequence):
+        elif isinstance(program, (str, Sequence)):
             if isinstance(program, str):
                 program = preprocess_program(program)
             validated_program = validate_program(program)
@@ -66,9 +68,7 @@ class Program(Sequence[Command]):
         self,
         index_or_slice: Union[int, slice],
     ) -> Union[Command, Sequence[Command]]:
-        if isinstance(index_or_slice, int):
-            return self._program[index_or_slice]
-        elif isinstance(index_or_slice, slice):
+        if isinstance(index_or_slice, (int, slice)):
             return self._program[index_or_slice]
         else:
             raise TypeError("Index must be an int or a slice.")
@@ -129,7 +129,7 @@ class Program(Sequence[Command]):
 
             except ProgramPointerError:
                 # We've hit the end of the program without finding the matching ).
-                raise InvalidProgramError("Unmatched loop start.")
+                raise InvalidProgramError("Unmatched loop start.") from None
 
         # We are now at the matching ), but we need to move past it, so move right once more.
         try:
@@ -158,7 +158,7 @@ class Program(Sequence[Command]):
                         bracket_depth += 1
 
             except ProgramPointerError:
-                raise InvalidProgramError("Unmatched loop end.")
+                raise InvalidProgramError("Unmatched loop end.") from None
 
         # We are now at the matching (, but we need to move just after it, so move right once.
         # NOTE: We don't need to worry about hitting the end of the program here.
@@ -241,7 +241,7 @@ def validate_program(program: Union[str, Sequence[Command]]) -> list[Command]:
         try:
             parsed_commands = [Command(command) for command in program]
         except ValueError as e:
-            raise InvalidProgramError(str(e))
+            raise InvalidProgramError(str(e)) from None
     else:
         # The program is already a list of Commands.
         parsed_commands = list(program)

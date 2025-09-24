@@ -1,10 +1,18 @@
-import logging
 import argparse
-from . import run, Program, Tape
+import logging
+import os
+import sys
+
+from . import Program, Tape, __version__, run
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+    )
 
     parser.add_argument(
         "--log-level",
@@ -17,16 +25,16 @@ def main() -> None:
         dest="subcommand",
     )
 
-    run_parsr = subparsers.add_parser("run", help="Run a source code")
+    run_parser = subparsers.add_parser("run", help="Run a source code")
 
-    run_parsr.add_argument("source", help="The source code to run")
-    run_parsr.add_argument(
+    run_parser.add_argument("source", help="The source code to run")
+    run_parser.add_argument(
         "-t",
         "--tape",
         help="The initial tape to use. Can be a string of 1s and 0s, or an integer to use as the tape size",
         default="8",
     )
-    run_parsr.add_argument(
+    run_parser.add_argument(
         "--max-steps",
         type=int,
         help="The maximum number of steps to run",
@@ -54,6 +62,20 @@ def main() -> None:
         raise ValueError(f"Unknown subcommand: {args.subcommand}")
 
 
+def pipe_print(*args: object, **kwargs: object) -> None:
+    # Print to stdout. Make sure we work with pipes.
+    # https://docs.python.org/3/library/signal.html#note-on-sigpipe
+    # spellchecker: ignore WRONLY
+    try:
+        print(*args, **kwargs)  # type: ignore
+        sys.stdout.flush()
+    except BrokenPipeError:
+        # Gracefully handle broken pipe when e.g. piping to head
+        devnull = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(devnull, sys.stdout.fileno())
+        sys.exit(1)
+
+
 def run_main(args: argparse.Namespace, logger: logging.Logger) -> None:
     # Check if tape is a string containing only 1s and 0s
     if all(x in "01" for x in args.tape):
@@ -64,9 +86,7 @@ def run_main(args: argparse.Namespace, logger: logging.Logger) -> None:
         tape = int(args.tape)
 
     def callback(program: Program, tape: Tape) -> bool:
-        logger.debug(
-            f" {program.steps} {program.command.value} {program.pointer:02d} | {tape.pointer:02d} {tape}"
-        )
+        logger.debug(f" {program.steps} {program.command.value} {program.pointer:02d} | {tape.pointer:02d} {tape}")
         return False
 
     _program, tape = run(
@@ -76,13 +96,13 @@ def run_main(args: argparse.Namespace, logger: logging.Logger) -> None:
         callback=callback,
     )
 
-    print(tape)
+    pipe_print(tape)
 
 
 def reverse_main(args: argparse.Namespace, logger: logging.Logger) -> None:
     from .reverse import reverse_program
 
-    print(reverse_program(args.source))
+    pipe_print(reverse_program(args.source))
 
 
 if __name__ == "__main__":

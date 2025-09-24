@@ -7,6 +7,16 @@ name = "rbf-lang"
 authors = [{ name = "Marcin Konowalczyk", email = "marcin.konow@lczyk.xyz" }]
 dynamic = ["version", "description"]
 readme = "README.md"
+license = { file = "LICENSE" }
+keywords = ["esolang", "reversible", "turing tarpits", "interpreter"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Interpreters",
+    "Intended Audience :: Developers",
+    "Typing :: Typed",
+]
 requires-python = ">=3.9"
 
 [project.urls]
@@ -58,12 +68,56 @@ files = [
     #
 ]
 
+[tool.ruff]
+exclude = [
+    ".git",
+    "__pycache__",
+    ".venv",
+    ".env",
+    ".eggs",
+    "*.egg",
+    ".tox",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".vscode",
+    "*-env",
+]
+line-length = 120
+lint.ignore = [
+    "SIM105",
+    "PLR0911", # too many return statements
+    "PLR0912", # too many branches
+    "PLR0913", # too many arguments in function definition
+    "PLR2004", # magic values
+    #
+]
+lint.select = [
+    "E",    # pycodestyle
+    "F",    # Pyflakes
+    "B",    # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "W",    # warnings
+    "UP",   # pyupgrade
+    "I",    # isort
+    "Q",    # flake8-quotes
+    "RUF",  # ruff
+    "TID",  # flake8-tidy-imports
+    "PERF", # perflint
+    "FURB", # refurb
+    "PL",   # pylint
+    #
+]
+
+output-format = "concise"
+
+
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = ["-s", "--tb=short", "--color=yes"]
 
 [dependency-groups]
 dev = [
+    "flit>=3.12.0",
     "mypy>=1.15.0",
     "pytest>=8.3.5",
     "ruff>=0.11.2",

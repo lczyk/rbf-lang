@@ -1,4 +1,4 @@
-from rbf_lang import run, Tape, Program
+from rbf_lang import Program, Tape, run
 
 
 def test_run_toggle() -> None:
