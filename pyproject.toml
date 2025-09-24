@@ -7,6 +7,16 @@ name = "rbf-lang"
 authors = [{ name = "Marcin Konowalczyk", email = "marcin.konow@lczyk.xyz" }]
 dynamic = ["version", "description"]
 readme = "README.md"
+license = { file = "LICENSE" }
+keywords = ["esolang", "reversible", "turing tarpits", "interpreter"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Interpreters",
+    "Intended Audience :: Developers",
+    "Typing :: Typed",
+]
 requires-python = ">=3.9"
 
 [project.urls]
@@ -107,6 +117,7 @@ addopts = ["-s", "--tb=short", "--color=yes"]
 
 [dependency-groups]
 dev = [
+    "flit>=3.12.0",
     "mypy>=1.15.0",
     "pytest>=8.3.5",
     "ruff>=0.11.2",

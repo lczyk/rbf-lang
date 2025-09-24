@@ -3,6 +3,8 @@ Reversible BitFuck (RBF) interpreter
 """
 
 __version__ = "0.2.1"
+__author__ = "Marcin Konowalczyk"
+__license__ = "MIT"
 
 from . import program, reverse, runner, tape
 
