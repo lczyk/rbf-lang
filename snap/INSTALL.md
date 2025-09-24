@@ -1,4 +1,4 @@
-To build smap run from the project root
+To build snap run from the project root
 
 ```bash
 snapcraft pack
